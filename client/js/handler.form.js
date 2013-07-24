@@ -140,23 +140,11 @@ qq.UploadHandlerForm = function(o, uploadCompleteCallback, onUuidChanged, logCal
     }
 
     function parseResponse(id, innerHtmlOrMessage) {
-        var response;
-
-        try {
-            response = qq.parseJson(innerHtmlOrMessage);
-
-            if (response.newUuid !== undefined) {
-                log("Server requested UUID change from '" + uuids[id] + "' to '" + response.newUuid + "'");
-                uuids[id] = response.newUuid;
-                onUuidChanged(id, response.newUuid);
-            }
+        if (innerHtmlOrMessage == '') {
+            return { success: true };
+        } else {
+            return {};
         }
-        catch(error) {
-            log('Error when attempting to parse iframe upload response (' + error + ')', 'error');
-            response = {};
-        }
-
-        return response;
     }
 
     /**

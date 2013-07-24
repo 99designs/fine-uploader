@@ -4239,23 +4239,11 @@ qq.UploadHandlerForm = function(o, uploadCompleteCallback, onUuidChanged, logCal
     }
 
     function parseResponse(id, innerHtmlOrMessage) {
-        var response;
-
-        try {
-            response = qq.parseJson(innerHtmlOrMessage);
-
-            if (response.newUuid !== undefined) {
-                log("Server requested UUID change from '" + uuids[id] + "' to '" + response.newUuid + "'");
-                uuids[id] = response.newUuid;
-                onUuidChanged(id, response.newUuid);
-            }
+        if (innerHtmlOrMessage == '') {
+            return { success: true };
+        } else {
+            return {};
         }
-        catch(error) {
-            log('Error when attempting to parse iframe upload response (' + error + ')', 'error');
-            response = {};
-        }
-
-        return response;
     }
 
     /**
@@ -4451,7 +4439,7 @@ qq.UploadHandlerForm = function(o, uploadCompleteCallback, onUuidChanged, logCal
 ;/*globals qq, File, XMLHttpRequest, FormData, Blob*/
 qq.UploadHandlerXhr = function(o, uploadCompleteCallback, onUuidChanged, logCallback) {
     "use strict";
-    
+
     var options = o,
         uploadComplete = uploadCompleteCallback,
         log = logCallback,
@@ -4720,23 +4708,11 @@ qq.UploadHandlerXhr = function(o, uploadCompleteCallback, onUuidChanged, logCall
     }
 
     function parseResponse(id, xhr) {
-        var response;
-
-        try {
-            response = qq.parseJson(xhr.responseText);
-
-            if (response.newUuid !== undefined) {
-                log("Server requested UUID change from '" + fileState[id].uuid + "' to '" + response.newUuid + "'");
-                fileState[id].uuid = response.newUuid;
-                onUuidChanged(id, response.newUuid);
-            }
+        if (xhr.responseText == '') {
+            return { success: true };
+        } else {
+            return {};
         }
-        catch(error) {
-            log('Error when attempting to parse xhr response text (' + error + ')', 'error');
-            response = {};
-        }
-
-        return response;
     }
 
     function handleResetResponse(id) {
@@ -5804,4 +5780,4 @@ qq.FilenameInputFocusHandler = function(spec) {
 
 }(jQuery));
 
-/*! 2013-07-22 */
+/*! 2013-07-24 */
